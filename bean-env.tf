@@ -1,6 +1,6 @@
 resource "aws_elastic_beanstalk_environment" "vprofile-bean-prod" {
-  application         = aws_elastic_beanstalk_application.vprofile-prod.name
   name                = "vprofile-bean-prod"
+  application         = aws_elastic_beanstalk_application.vprofile-prod
   solution_stack_name = "64bit Amazon Linux 2 v4.3.2 running Tomcat 8.5 Corretto 11"
   cname_prefix        = "vprofile-bean-prod-domain"
   setting {
@@ -36,7 +36,7 @@ resource "aws_elastic_beanstalk_environment" "vprofile-bean-prod" {
   setting {
     name      = "EC2KeyName"
     namespace = "aws:autoscaling:launchconfiguration"
-    value     = "aws_key_pair.vprofile.key_name"
+    value     = aws_key_pair.vprofilekey.key_name
   }
   setting {
     name      = "Availability Zones"
