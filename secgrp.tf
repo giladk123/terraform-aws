@@ -4,7 +4,7 @@ resource "aws_security_group" "vprofile-bean-elb-sg" {
   vpc_id      = module.vpc.vpc_id
   egress {
     from_port   = 0
-    protocol    = ""
+    protocol    = "-1"
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -22,7 +22,7 @@ resource "aws_security_group" "vprofile-bastion-sg" {
   vpc_id      = module.vpc.vpc_id
   egress {
     from_port   = 0
-    protocol    = ""
+    protocol    = "-1"
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -40,7 +40,7 @@ resource "aws_security_group" "vprofile-prod-sg" {
   vpc_id      = module.vpc.vpc_id
   egress {
     from_port   = 0
-    protocol    = ""
+    protocol    = "-1"
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -58,7 +58,7 @@ resource "aws_security_group" "vprofile-backend-sg" {
   vpc_id      = module.vpc.vpc_id
   egress {
     from_port   = 0
-    protocol    = ""
+    protocol    = "-1"
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -77,10 +77,10 @@ resource "aws_security_group" "vprofile-backend-sg" {
 }
 
 resource "aws_security_group_rule" "sec_group_allow_itself" {
-  from_port                = 0
-  protocol                 = "tcp"
-  security_group_id        = "aws_security_group.vprofile-backend-sg.id"
-  to_port                  = 65535
   type                     = "ingress"
-  source_security_group_id = "aws_security_group.vprofile-backend-sg.id"
+  from_port                = 0
+  to_port                  = 65535
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.vprofile-backend-sg.id
+  source_security_group_id = aws_security_group.vprofile-backend-sg.id
 }
