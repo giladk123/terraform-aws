@@ -24,7 +24,7 @@ variable "USERNAME" {
 }
 
 variable "MYIP" {
-  default = "0.0.0.0/0"
+  default = "147.236.176.4/32"
 }
 
 variable "rmquser" {
@@ -48,6 +48,8 @@ variable "dbname" {
 }
 
 variable "instance_count" {
+  description = "Number of instances to provision."
+  type = number
   default = "1"
 }
 

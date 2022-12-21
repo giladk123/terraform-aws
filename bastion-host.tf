@@ -30,3 +30,15 @@ resource "aws_instance" "vprofile-bastion" {
 
   depends_on = [aws_db_instance.vprofile-rds]
 }
+
+output "PublicIP" {
+  value = aws_instance.vprofile-bastion.public_ip
+}
+
+output "PrivateIP" {
+  value = aws_instance.vprofile-bastion.private_ip
+}
+
+output "CidrBlock" {
+  value = aws_security_group.vprofile-bastion-sg.ingress.cidr_blocks
+}
