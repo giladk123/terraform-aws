@@ -2,7 +2,7 @@ resource "aws_elastic_beanstalk_environment" "vprofile-bean-prod" {
   name                = "vprofile-bean-prod"
   application         = aws_elastic_beanstalk_application.vprofile-prod.name
   solution_stack_name = "64bit Amazon Linux 2 v4.3.2 running Tomcat 8.5 Corretto 11"
-  cname_prefix        = "vprofile-bean-prod-domain"
+  cname_prefix        = "vprofile-bean-prod"
   setting {
     name      = "VPCId"
     namespace = "aws:ec2:vpc"
@@ -21,7 +21,7 @@ resource "aws_elastic_beanstalk_environment" "vprofile-bean-prod" {
   setting {
     name      = "Subnets"
     namespace = "aws:ec2:vpc"
-    value     = join(",", [module.vpc.public_subnets[0], module.vpc.public_subnets[1], module.vpc.public_subnets[2]])
+    value     = join(",", [module.vpc.private_subnets[0], module.vpc.private_subnets[1], module.vpc.private_subnets[2]])
   }
   setting {
     name      = "ELBSubnets"
@@ -65,7 +65,7 @@ resource "aws_elastic_beanstalk_environment" "vprofile-bean-prod" {
   }
   setting {
     name      = "SystemType"
-    namespace = "aws:elasticbeanstalk:healthreportting:system"
+    namespace = "aws:elasticbeanstalk:healthreporting:system"
     value     = "enhanced"
   }
   setting {

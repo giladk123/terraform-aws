@@ -49,8 +49,8 @@ variable "dbname" {
 
 variable "instance_count" {
   description = "Number of instances to provision."
-  type = number
-  default = "1"
+  type        = number
+  default     = "1"
 }
 
 variable "VPC_NAME" {

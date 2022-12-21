@@ -32,13 +32,9 @@ resource "aws_instance" "vprofile-bastion" {
 }
 
 output "PublicIP" {
-  value = aws_instance.vprofile-bastion.public_ip
+  value = aws_instance.vprofile-bastion[0].public_ip
 }
 
 output "PrivateIP" {
-  value = aws_instance.vprofile-bastion.private_ip
-}
-
-output "CidrBlock" {
-  value = aws_security_group.vprofile-bastion-sg.ingress.cidr_blocks
+  value = aws_instance.vprofile-bastion[0].private_ip
 }
