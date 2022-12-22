@@ -15,6 +15,12 @@ resource "aws_instance" "vprofile-bastion" {
     content     = templatefile("templates/db-deploy.tmpl", { rds-endpoint = aws_db_instance.vprofile-rds.address, dbuser = var.dbuser, dbpass = var.dbpass })
     destination = "/tmp/vprofile-dbdeploy.sh"
   }
+
+  provisioner "file" {
+    content     = templatefile("templates/app_properties.tmpl", { mc-endpoint = aws_elasticache_cluster.vprofile-cache.configuration_endpoint, rds-endpoint = aws_db_instance.vprofile-rds.address, dbuser = var.dbuser, dbpass = var.dbpass, amq-endpoint = aws_mq_broker.vprofile-rmq.instances.0.endpoints.1, rmquser = var.rmquser, rmqpass = var.rmqpass })
+    destination = "/tmp/application.properties"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/vprofile-dbdeploy.sh",
