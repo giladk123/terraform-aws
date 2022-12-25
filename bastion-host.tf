@@ -25,7 +25,14 @@ resource "aws_instance" "vprofile-bastion" {
     inline = [
       "chmod +x /tmp/vprofile-dbdeploy.sh",
       "sed -i -e 's/\r$//' /tmp/vprofile-dbdeploy.sh",
-      "sudo /tmp/vprofile-dbdeploy.sh"
+      "sudo /tmp/vprofile-dbdeploy.sh",
+      "chmod +x /tmp/application.properties",
+      "sed -i 's/:5671//' /tmp/application.properties",
+      "sed -i 's/:11211//' /tmp/application.properties",
+      "sed -i 's#amqp+ssl://##g' /tmp/application.properties",
+      "sudo cp -f /tmp/application.properties /home/ubuntu/vprofile-project/src/main/resources/",
+      "cd /home/ubuntu/vprofile-project",
+      "sudo mvn install"
     ]
   }
 
@@ -36,6 +43,19 @@ resource "aws_instance" "vprofile-bastion" {
   }
 
   depends_on = [aws_db_instance.vprofile-rds]
+}
+
+resource "aws_s3_bucket" "b" {
+  bucket = "beanstalk-apps-2023"
+  tags = {
+    Name        = "Jars"
+    Environment = " Dev"
+  }
+}
+
+resource "aws_s3_bucket_acl" "b-acl" {
+  bucket = aws_s3_bucket.b.id
+  acl    = "private"
 }
 
 output "PublicIP" {
