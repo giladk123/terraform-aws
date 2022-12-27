@@ -36,6 +36,10 @@ resource "aws_instance" "vprofile-bastion" {
     ]
   }
 
+  provisioner "local-exec" {
+    command = "scp -i vprofilekey -o StrictHostKeyChecking=no ${var.USERNAME}@${self.public_ip}:/home/ubuntu/vprofile-project/target/vprofile-v2.war ."
+  }
+
   connection {
     user        = var.USERNAME
     private_key = file(var.PRIV_KEY_PATH)
@@ -51,6 +55,8 @@ resource "aws_s3_bucket" "b" {
     Name        = "Jars"
     Environment = " Dev"
   }
+
+  depends_on = [aws_instance.vprofile-bastion]
 }
 
 resource "aws_s3_bucket_acl" "b-acl" {
