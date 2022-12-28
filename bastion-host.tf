@@ -62,6 +62,16 @@ resource "aws_s3_bucket" "b" {
 resource "aws_s3_bucket_acl" "b-acl" {
   bucket = aws_s3_bucket.b.id
   acl    = "private"
+
+  depends_on = [aws_s3_bucket.b]
+}
+
+resource "aws_s3_object" "war_file" {
+  bucket = aws_s3_bucket.b.id
+  key    = "vprofile-v2.war"
+  source = "vprofile-v2.war"
+
+  depends_on = [aws_s3_bucket_acl.b-acl]
 }
 
 output "PublicIP" {
